@@ -1,27 +1,28 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, type ChangeEvent } from 'react'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { IconChange, IconDelete, IconAdd } from '@/components/icons'
-import { Contact } from '@/db/schema'
 import { DEFAULT_AVATAR_URL } from '@/configs/defaults'
 import { initialsFromName, isCustomAvatar } from '@/lib/helper'
 
-function useAvatarUpload(contact: Contact | null) {
-  const { avatar, name } = contact ?? {}
+export type AvatarUploadProps = {
+  value: string
+  onChange: (value: string) => void
+  nameForInitials: string
+}
 
-  const isEdit = contact != null
-  const avatarSrc = avatar ?? DEFAULT_AVATAR_URL
-
-  const buttonLabel = isEdit ? 'Change' : 'Add'
-  const buttonIcon = isEdit ? (
+function useAvatarUpload(value: string) {
+  const hasCustomAvatar = isCustomAvatar(value)
+  const avatarSrc = value || DEFAULT_AVATAR_URL
+  const buttonLabel = hasCustomAvatar ? 'Change' : 'Add'
+  const buttonIcon = hasCustomAvatar ? (
     <IconChange className="size-6" />
   ) : (
     <IconAdd className="size-6" />
   )
-
-  const showDeleteButton = isEdit && isCustomAvatar(avatar)
+  const showDeleteButton = hasCustomAvatar
 
   return {
     avatarSrc,
@@ -31,17 +32,35 @@ function useAvatarUpload(contact: Contact | null) {
   }
 }
 
-function AvatarUpload({ contact }: { contact: Contact | null }) {
-  const { avatarSrc, buttonLabel, buttonIcon, showDeleteButton } =
-    useAvatarUpload(contact)
+function AvatarUpload({
+  value,
+  onChange,
+  nameForInitials,
+}: AvatarUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const { avatarSrc, buttonLabel, buttonIcon, showDeleteButton } =
+    useAvatarUpload(value)
 
   const handleUpload = () => {
     fileInputRef.current?.click()
   }
 
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file?.type.startsWith('image/')) return
+
+    const reader = new FileReader()
+    reader.onload = () => {
+      const result = reader.result
+      if (typeof result === 'string') onChange(result)
+    }
+    reader.readAsDataURL(file)
+  }
+
   const handleDelete = () => {
-    console.log('Delete')
+    onChange('')
   }
 
   return (
@@ -53,10 +72,11 @@ function AvatarUpload({ contact }: { contact: Contact | null }) {
         className="hidden"
         tabIndex={-1}
         aria-hidden
+        onChange={handleFileChange}
       />
       <Avatar className="size-16 shrink-0 md:size-[88px]">
         <AvatarImage src={avatarSrc} alt="" />
-        <AvatarFallback>{initialsFromName(contact?.name ?? '')}</AvatarFallback>
+        <AvatarFallback>{initialsFromName(nameForInitials)}</AvatarFallback>
       </Avatar>
 
       {/* action buttons */}

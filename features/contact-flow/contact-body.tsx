@@ -10,11 +10,13 @@ import { useContactDialog } from '@/stores/contact-dialog-store'
  */
 function ContactBody() {
   const { open, close, contact } = useContactDialog()
+  
 
   return (
     <div className="border-t border-white/5 py-3">
       <ContactList />
       <ContactForm
+        key={open ? String(contact?.id ?? 'new') : 'closed'}
         open={open}
         contact={contact}
         onOpenChange={(next) => {
