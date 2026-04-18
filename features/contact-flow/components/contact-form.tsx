@@ -57,7 +57,7 @@ function ContactForm({ open, onOpenChange, contact }: ContactFormProps) {
           </div>
         </form>
 
-        <DialogFooter className="gap-2 py-6">
+        <DialogFooter className="gap-2 pt-6">
           <Button
             type="button"
             className="order-last md:order-first"
