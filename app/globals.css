@@ -8,6 +8,10 @@
   /* Bound to next/font variables on <html> (see app/layout.tsx) */
   --font-heading: var(--font-stack-heading);
   --font-sans: var(--font-stack-body);
+  /* Text & Icon — matches Figma (not the shadcn `secondary` surface palette) */
+  --color-text-secondary: rgba(255, 255, 255, 0.56);
+  --color-text-disabled: rgba(255, 255, 255, 0.32);
+  /* shadcn  */
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -39,6 +43,7 @@
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -89,7 +94,7 @@
 
   /* Text — opacity system */
   --color-text-primary: #ffffff; /* 100% */
-  --color-text-secondary: rgba(255, 255, 255, 0.56); /* 56%  */
+  --color-text-secondary: rgba(255, 255, 255, 0.56); /* 56% */
   --color-text-disabled: rgba(255, 255, 255, 0.32); /* 32%  */
 
   --radius: 0.5rem; /* 8px */
@@ -100,8 +105,8 @@
   --foreground: var(--color-text-primary);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
+  --popover: var(--color-g80);
+  --popover-foreground: var(--color-text-primary);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
@@ -132,7 +137,6 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    font-size: var(--text-base);
   }
   body {
     @apply bg-background text-foreground;
