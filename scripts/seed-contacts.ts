@@ -51,7 +51,8 @@ function avatarPathFromAsset(asset: string): string {
 }
 
 async function main() {
-  const force = process.env.SEED_FORCE === '1' || process.env.SEED_FORCE === 'true'
+  const force =
+    process.env.SEED_FORCE === '1' || process.env.SEED_FORCE === 'true'
 
   const existing = await db
     .select({ id: contactsTable.id })
