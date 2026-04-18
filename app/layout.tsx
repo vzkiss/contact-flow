@@ -1,15 +1,24 @@
-import { Geist, Geist_Mono, Inter } from 'next/font/google'
+import localFont from 'next/font/local'
+import type { Metadata } from 'next'
 
 import './globals.css'
-import { ThemeProvider } from '@/components/theme-provider'
 import { cn } from '@/lib/utils'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
-
-const fontMono = Geist_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
+const glysa = localFont({
+  src: './fonts/Glysa.otf',
+  variable: '--font-stack-heading',
+  display: 'swap',
+  weight: '500',
 })
+
+const lexendDeca = localFont({
+  src: './fonts/LexendDeca-VariableFont_wght.ttf',
+  variable: '--font-stack-body',
+  display: 'swap',
+  weight: '400',
+})
+
+export const metadata: Metadata = { title: 'Contact Flow', colorScheme: 'dark' }
 
 export default function RootLayout({
   children,
@@ -20,16 +29,9 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn(
-        'antialiased',
-        fontMono.variable,
-        'font-sans',
-        inter.variable
-      )}
+      className={cn('antialiased', lexendDeca.variable, glysa.variable, 'dark')}
     >
-      <body>
-        <ThemeProvider>{children}</ThemeProvider>
-      </body>
+      <body>{children}</body>
     </html>
   )
 }
