@@ -21,6 +21,7 @@ import { avatarDisplaySrc, initialsFromName } from '@/lib/helper'
 import { cn } from '@/lib/utils'
 import { contactDialogStore } from '@/stores/contact-dialog-store'
 import { Contact } from '@/db/schema'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 interface ContactItemProps {
   contact: Contact
@@ -30,6 +31,15 @@ function ContactItem({ contact }: ContactItemProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const { name, phone, avatar } = contact
   const avatarSrc = avatarDisplaySrc(avatar)
+
+  const queryClient = useQueryClient()
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: number) =>
+      fetch(`/api/contact/${id}`, { method: 'DELETE' }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ['contact-list'] }),
+  })
 
   const menuItems = [
     {
@@ -48,7 +58,7 @@ function ContactItem({ contact }: ContactItemProps) {
       icon: <IconDelete className="size-5 text-text-secondary" />,
       label: 'Remove',
       onClick: () => {
-        console.log('Remove')
+        deleteMutation.mutate(contact.id)
       },
     },
   ] as const

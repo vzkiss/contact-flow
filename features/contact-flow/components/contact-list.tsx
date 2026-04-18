@@ -1,7 +1,7 @@
-'use client'
-
 import { Contact } from '@/db/schema'
 import ContactItem from './contact-item'
+import { useQuery } from '@tanstack/react-query'
+import { motion } from 'motion/react'
 
 const now = new Date()
 
@@ -67,10 +67,30 @@ const MOCK_CONTACTS: Contact[] = [
  * @returns A list of contacts
  */
 function ContactList() {
+  const { data: contacts = [], isLoading } = useQuery({
+    queryKey: ['contact-list'],
+    queryFn: () => fetch('/api/contact').then((r) => r.json()),
+  })
+
+  console.log(contacts)
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
   return (
     <div className="flex flex-col">
-      {MOCK_CONTACTS.map((contact) => (
-        <ContactItem key={contact.id} contact={contact} />
+      {contacts.map((contact: Contact) => (
+        <motion.div
+          key={contact.id}
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          layout
+          transition={{ duration: 0.2 }}
+        >
+          <ContactItem key={contact.id} contact={contact} />
+        </motion.div>
       ))}
     </div>
   )

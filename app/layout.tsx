@@ -1,5 +1,6 @@
 import localFont from 'next/font/local'
 import type { Metadata } from 'next'
+import { Providers } from '@/providers'
 
 import './globals.css'
 import { cn } from '@/lib/utils'
@@ -31,7 +32,9 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn('antialiased', lexendDeca.variable, glysa.variable, 'dark')}
     >
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   )
 }

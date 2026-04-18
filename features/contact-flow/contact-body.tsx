@@ -3,6 +3,7 @@
 import ContactList from './components/contact-list'
 import ContactForm from './components/contact-form'
 import { useContactDialog } from '@/stores/contact-dialog-store'
+import { useQuery } from '@tanstack/react-query'
 
 /**
  * ContactBody
@@ -10,7 +11,6 @@ import { useContactDialog } from '@/stores/contact-dialog-store'
  */
 function ContactBody() {
   const { open, close, contact } = useContactDialog()
-  
 
   return (
     <div className="border-t border-white/5 py-3">
