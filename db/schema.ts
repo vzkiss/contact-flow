@@ -14,3 +14,4 @@ export const contactsTable = sqliteTable('contacts', {
 
 export type Contact = typeof contactsTable.$inferSelect
 export type NewContact = typeof contactsTable.$inferInsert
+export type UpdateContact = Omit<NewContact, 'createdAt' | 'updatedAt'>

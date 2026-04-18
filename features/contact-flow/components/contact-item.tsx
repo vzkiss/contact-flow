@@ -18,6 +18,8 @@ import {
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
+import { contactDialogStore } from '@/stores/contact-dialog-store'
+import { Contact } from '@/db/schema'
 
 const defaultAvatar = '/assets/avatar-default.svg'
 
@@ -30,48 +32,42 @@ function initialsFromName(name: string) {
 }
 
 interface ContactItemProps {
-  name: string
-  phone: string
-  avatar?: string
+  contact: Contact
 }
 
-const menuItems = [
-  {
-    icon: <IconSettings className="size-5 text-text-secondary" />,
-    label: 'Edit',
-    onClick: () => {
-      console.log('Edit')
-    },
-  },
-  {
-    icon: <IconFavourite className="size-5 text-text-secondary" />,
-    label: 'Favourite',
-    onClick: () => {
-      console.log('Favourite')
-    },
-  },
-  {
-    icon: <IconDelete className="size-5 text-text-secondary" />,
-    label: 'Remove',
-    onClick: () => {
-      console.log('Remove')
-    },
-  },
-] as const
-
-function ContactItem({
-  name = 'Jamie Wright',
-  phone = '+36 20 100 0001',
-  avatar = defaultAvatar,
-}: ContactItemProps) {
+function ContactItem({ contact }: ContactItemProps) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const { name, phone, avatar } = contact
+  const avatarSrc = avatar ?? defaultAvatar
+
+  const menuItems = [
+    {
+      icon: <IconSettings className="size-5 text-text-secondary" />,
+      label: 'Edit',
+      onClick: () => contactDialogStore.getState().openEdit(contact),
+    },
+    {
+      icon: <IconFavourite className="size-5 text-text-secondary" />,
+      label: 'Favourite',
+      onClick: () => {
+        console.log('Favourite')
+      },
+    },
+    {
+      icon: <IconDelete className="size-5 text-text-secondary" />,
+      label: 'Remove',
+      onClick: () => {
+        console.log('Remove')
+      },
+    },
+  ] as const
 
   return (
     <div className="group my-2.5 flex h-10 items-center justify-between">
       {/* info */}
       <div className="flex space-x-4">
         <Avatar className="size-10 rounded-full">
-          <AvatarImage src={avatar} alt="" />
+          <AvatarImage src={avatarSrc} alt="" />
           <AvatarFallback>{initialsFromName(name)}</AvatarFallback>
         </Avatar>
         {/* data */}

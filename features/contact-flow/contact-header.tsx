@@ -1,7 +1,10 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import { IconAdd, IconSettings } from '@/components/icons'
 import profilePic from '@/components/icons/icon-profile-pic.svg'
 import Image from 'next/image'
+import { contactDialogStore } from '@/stores/contact-dialog-store'
 
 /**
  * ContactHeader
@@ -24,7 +27,10 @@ function ContactHeader() {
           </Button>
         </div>
         {/* action button */}
-        <Button variant="special">
+        <Button
+          variant="special"
+          onClick={() => contactDialogStore.getState().openAdd()}
+        >
           <IconAdd className="size-6" />
           Add new
         </Button>
