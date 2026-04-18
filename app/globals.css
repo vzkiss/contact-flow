@@ -98,6 +98,9 @@
   --color-text-disabled: rgba(255, 255, 255, 0.32); /* 32%  */
 
   --radius: 0.5rem; /* 8px */
+
+  --btn-special-fill: linear-gradient(180deg, #282828 0%, #282828 100%);
+  --btn-special-stroke: linear-gradient(180deg, #3c3c3c 0%, transparent 100%);
 }
 
 .dark {

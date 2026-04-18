@@ -110,6 +110,7 @@ function ContactItem({
           >
             {menuItems.map((item) => (
               <DropdownMenuItem
+                key={item.label}
                 className="cursor-pointer space-x-3 px-2.5 py-3"
                 onClick={item.onClick}
               >

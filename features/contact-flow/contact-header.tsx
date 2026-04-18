@@ -24,9 +24,9 @@ function ContactHeader() {
           </Button>
         </div>
         {/* action button */}
-        <Button variant="default">
+        <Button variant="special">
           <IconAdd className="size-6" />
-          Add New
+          Add new
         </Button>
       </div>
     </header>
