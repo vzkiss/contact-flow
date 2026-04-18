@@ -1,17 +1,31 @@
-import { Button } from '@/components/ui/button'
+import { IconArrowLeft, IconLightMode } from '@/components/icons'
+import ContactHeader from '@/features/contact-flow/contact-header'
+import ContactBody from '@/features/contact-flow/contact-body'
 
 export default function Page() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-heading">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
+    <div className="flex h-dvh min-h-svh justify-center">
+      {/* left sidebar */}
+      <aside className="hidden w-[240px] shrink-0 border-r border-white/5 md:block">
+        <div className="mt-24 flex items-center justify-end">
+          <div className="my-7 mr-6 cursor-pointer p-2">
+            <IconArrowLeft className="size-6" />
+          </div>
         </div>
-        <div className="text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
+      </aside>
+
+      {/* main content */}
+      <main className="flex w-full flex-col px-6 md:max-w-3xl md:pt-24">
+        <ContactHeader />
+        <ContactBody />
+      </main>
+
+      {/* right sidebar */}
+      <div className="hidden w-[240px] shrink-0 border-l border-white/5 md:block">
+        <div className="mt-24 flex items-center justify-start">
+          <div className="my-7 ml-6 cursor-pointer p-2">
+            <IconLightMode className="size-6" />
+          </div>
         </div>
       </div>
     </div>

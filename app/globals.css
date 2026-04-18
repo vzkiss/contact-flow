@@ -46,6 +46,32 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* ── Type scale — overrides Tailwind defaults to match Figma exactly ── */
+  /* H1 → text-4xl  | Glysa Medium 32/48 ls:0%                            */
+  --text-4xl: 2rem;
+  --text-4xl--line-height: 3rem;
+  --text-4xl--letter-spacing: 0em;
+
+  /* H2 → text-2xl  | Glysa Medium 24/40 ls:0%                            */
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 2.5rem;
+  --text-2xl--letter-spacing: 0em;
+
+  /* H3 → text-base | Lexend Deca Regular 16/24 ls:1%                     */
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-base--letter-spacing: 0.01em;
+
+  /* Body → text-sm | Lexend Deca Regular 14/20 ls:1%                     */
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-sm--letter-spacing: 0.01em;
+
+  /* Message → text-xs | Lexend Deca Regular 12/16 ls:1%                  */
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-xs--letter-spacing: 0.01em;
 }
 
 :root {
@@ -70,8 +96,8 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
+  --background: var(--color-g100);
+  --foreground: var(--color-text-primary);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
@@ -106,6 +132,7 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    font-size: var(--text-base);
   }
   body {
     @apply bg-background text-foreground;
