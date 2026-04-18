@@ -1,3 +1,6 @@
+'use client'
+
+import { useRef } from 'react'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { IconChange, IconDelete, IconAdd } from '@/components/icons'
@@ -31,9 +34,26 @@ function useAvatarUpload(contact: Contact | null) {
 function AvatarUpload({ contact }: { contact: Contact | null }) {
   const { avatarSrc, buttonLabel, buttonIcon, showDeleteButton } =
     useAvatarUpload(contact)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleUpload = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleDelete = () => {
+    console.log('Delete')
+  }
 
   return (
     <div className="flex items-center gap-4">
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        tabIndex={-1}
+        aria-hidden
+      />
       <Avatar className="size-16 shrink-0 md:size-[88px]">
         <AvatarImage src={avatarSrc} alt="" />
         <AvatarFallback>{initialsFromName(contact?.name ?? '')}</AvatarFallback>
@@ -41,12 +61,22 @@ function AvatarUpload({ contact }: { contact: Contact | null }) {
 
       {/* action buttons */}
       <div className="flex items-center gap-2">
-        <Button variant="default" size="lg" type="button">
+        <Button
+          variant="default"
+          size="lg"
+          type="button"
+          onClick={handleUpload}
+        >
           {buttonIcon as React.ReactNode}
           {buttonLabel} picture
         </Button>
         {showDeleteButton && (
-          <Button variant="default" size="icon-lg" type="button">
+          <Button
+            variant="default"
+            size="icon-lg"
+            type="button"
+            onClick={handleDelete}
+          >
             <IconDelete className="size-6" />
           </Button>
         )}
