@@ -7,7 +7,7 @@ export const contactsTable = sqliteTable('contacts', {
   name      : text('name').notNull(),
   email     : text('email').notNull().unique(),
   phone     : text('phone').notNull().unique(),
-  avatar    : text('avatar'),             // base64 encoded image
+  avatar    : text('avatar'),             // image as data URL (base64), same as upload
   createdAt : integer('created_at', { mode: 'timestamp' }).notNull().default(sql`CURRENT_TIMESTAMP`),
   updatedAt : integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`CURRENT_TIMESTAMP`),
 })

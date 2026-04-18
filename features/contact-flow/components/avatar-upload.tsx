@@ -4,8 +4,11 @@ import { useRef, type ChangeEvent } from 'react'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { IconChange, IconDelete, IconAdd } from '@/components/icons'
-import { DEFAULT_AVATAR_URL } from '@/configs/defaults'
-import { initialsFromName, isCustomAvatar } from '@/lib/helper'
+import {
+  avatarDisplaySrc,
+  initialsFromName,
+  isCustomAvatar,
+} from '@/lib/helper'
 
 export type AvatarUploadProps = {
   value: string
@@ -15,7 +18,7 @@ export type AvatarUploadProps = {
 
 function useAvatarUpload(value: string) {
   const hasCustomAvatar = isCustomAvatar(value)
-  const avatarSrc = value || DEFAULT_AVATAR_URL
+  const avatarSrc = avatarDisplaySrc(value)
   const buttonLabel = hasCustomAvatar ? 'Change' : 'Add'
   const buttonIcon = hasCustomAvatar ? (
     <IconChange className="size-6" />

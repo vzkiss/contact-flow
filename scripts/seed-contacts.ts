@@ -6,6 +6,9 @@ import { contactsTable } from '../db/schema'
 /**
  * Demo contacts from design assets: public/assets/[firstName].png
  *
+ * Avatars are stored as data URLs (`data:image/png;base64,...`), matching
+ * `FileReader.readAsDataURL` from the contact form upload.
+ *
  * Phone numbers are unique (schema enforces unique `phone`).
  * Set SEED_FORCE=1 to wipe and re-insert (e.g. local dev).
  */
@@ -42,12 +45,22 @@ const rows = [
   },
 ] as const
 
-function avatarPathFromAsset(asset: string): string {
+function avatarDataUrlFromAsset(asset: string): string {
   const filePath = path.join(process.cwd(), 'public', 'assets', asset)
   if (!fs.existsSync(filePath)) {
     throw new Error(`Missing avatar file: ${filePath}`)
   }
-  return `/assets/${asset}`
+  const buf = fs.readFileSync(filePath)
+  const ext = path.extname(asset).toLowerCase()
+  const mime =
+    ext === '.png'
+      ? 'image/png'
+      : ext === '.jpg' || ext === '.jpeg'
+        ? 'image/jpeg'
+        : ext === '.webp'
+          ? 'image/webp'
+          : 'image/png'
+  return `data:${mime};base64,${buf.toString('base64')}`
 }
 
 async function main() {
@@ -75,7 +88,7 @@ async function main() {
       name: r.name,
       email: r.email,
       phone: r.phone,
-      avatar: avatarPathFromAsset(r.asset),
+      avatar: avatarDataUrlFromAsset(r.asset),
     }))
   )
 

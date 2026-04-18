@@ -17,8 +17,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu'
-import { DEFAULT_AVATAR_URL } from '@/configs/defaults'
-import { initialsFromName } from '@/lib/helper'
+import { avatarDisplaySrc, initialsFromName } from '@/lib/helper'
 import { cn } from '@/lib/utils'
 import { contactDialogStore } from '@/stores/contact-dialog-store'
 import { Contact } from '@/db/schema'
@@ -30,7 +29,7 @@ interface ContactItemProps {
 function ContactItem({ contact }: ContactItemProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const { name, phone, avatar } = contact
-  const avatarSrc = avatar ?? DEFAULT_AVATAR_URL
+  const avatarSrc = avatarDisplaySrc(avatar)
 
   const menuItems = [
     {
