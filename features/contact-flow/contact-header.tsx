@@ -16,7 +16,7 @@ function ContactHeader() {
       {/* left */}
       <h1 className="font-heading text-4xl">Contacts</h1>
       {/* right */}
-      <div className="flex items-center space-x-6">
+      <div className="flex h-10 items-center space-x-6">
         {/* settings */}
         <div className="flex items-center space-x-2">
           <Button variant="ghost" size="icon">

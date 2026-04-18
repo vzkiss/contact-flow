@@ -17,19 +17,11 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu'
+import { DEFAULT_AVATAR_URL } from '@/configs/defaults'
+import { initialsFromName } from '@/lib/helper'
 import { cn } from '@/lib/utils'
 import { contactDialogStore } from '@/stores/contact-dialog-store'
 import { Contact } from '@/db/schema'
-
-const defaultAvatar = '/assets/avatar-default.svg'
-
-function initialsFromName(name: string) {
-  const parts = name.trim().split(/\s+/)
-  if (parts.length >= 2) {
-    return `${parts[0]![0] ?? ''}${parts.at(-1)![0] ?? ''}`.toUpperCase()
-  }
-  return name.slice(0, 2).toUpperCase()
-}
 
 interface ContactItemProps {
   contact: Contact
@@ -38,7 +30,7 @@ interface ContactItemProps {
 function ContactItem({ contact }: ContactItemProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const { name, phone, avatar } = contact
-  const avatarSrc = avatar ?? defaultAvatar
+  const avatarSrc = avatar ?? DEFAULT_AVATAR_URL
 
   const menuItems = [
     {
