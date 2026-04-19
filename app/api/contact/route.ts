@@ -3,9 +3,13 @@ import { db } from '@/db'
 import { contactsTable } from '@/db/schema'
 import { contactSchema } from '@/lib/validations'
 import { desc } from 'drizzle-orm'
+import { LibsqlError } from '@libsql/client'
 
-function isUniqueConstraintError(e: unknown): e is Error {
-  return e instanceof Error && e.message.includes('UNIQUE constraint failed')
+function isUniqueConstraintError(e: unknown): e is LibsqlError {
+  return (
+    e instanceof LibsqlError && e.code === 'SQLITE_CONSTRAINT_UNIQUE' ||
+    e instanceof Error && e.message.includes('UNIQUE constraint failed')
+  )
 }
 
 function uniqueConstraintMessage(e: Error) {
