@@ -16,10 +16,9 @@ const buttonVariants = cva(
           'rounded-full',
           'text-white',
           'bg-[#282828]',
-          'shadow-[inset_0_1px_0_#3C3C3C]',
-          'hover:shadow-[inset_0_0_0_9999px_rgba(255,255,255,0.04),inset_0_1px_0_#3C3C3C]',
-          'active:shadow-[inset_0_0_0_9999px_rgba(255,255,255,0.04),inset_0_1px_0_#3C3C3C]',
-          'transition-shadow duration-150',
+          'hover:bg-[#3C3C3C]',
+          'active:bg-[#3C3C3C]',
+          'transition-colors duration-150',
           'h-10 gap-2 py-2 pr-4 pl-3',
         ].join(' '),
         outline:
