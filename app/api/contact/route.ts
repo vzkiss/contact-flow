@@ -4,6 +4,16 @@ import { contactsTable } from '@/db/schema'
 import { contactSchema } from '@/lib/validations'
 import { desc } from 'drizzle-orm'
 
+function isUniqueConstraintError(e: unknown) {
+  return e instanceof Error && e.message.includes('UNIQUE constraint failed')
+}
+
+function uniqueConstraintMessage(e: Error) {
+  if (e.message.includes('contacts.phone')) return 'Phone number is already in use'
+  if (e.message.includes('contacts.email')) return 'Email address is already in use'
+  return 'A contact with these details already exists'
+}
+
 /**
  * GET /api/contact
  * @returns A list of contacts
@@ -34,7 +44,16 @@ export async function POST(req: Request) {
   }
 
   const data = { ...parsed.data, email: parsed.data.email || null }
-  const [row] = await db.insert(contactsTable).values(data).returning()
 
-  return NextResponse.json(row, { status: 201 })
+  try {
+    const [row] = await db.insert(contactsTable).values(data).returning()
+    return NextResponse.json(row, { status: 201 })
+  } catch (e) {
+    if (isUniqueConstraintError(e))
+      return NextResponse.json(
+        { error: uniqueConstraintMessage(e) },
+        { status: 409 }
+      )
+    throw e
+  }
 }

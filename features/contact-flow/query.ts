@@ -43,7 +43,10 @@ const saveContactMutationOptions = mutationOptions({
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(contact),
     })
-    if (!r.ok) throw new Error(`Failed to save contact: ${r.status}`)
+    if (!r.ok) {
+      const body = await r.json().catch(() => null)
+      throw new Error(body?.error ?? `Failed to save contact`)
+    }
     return r.json()
   },
 })

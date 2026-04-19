@@ -4,6 +4,16 @@ import { contactsTable } from '@/db/schema'
 import { contactSchema } from '@/lib/validations'
 import { eq } from 'drizzle-orm'
 
+function isUniqueConstraintError(e: unknown) {
+  return e instanceof Error && e.message.includes('UNIQUE constraint failed')
+}
+
+function uniqueConstraintMessage(e: Error) {
+  if (e.message.includes('contacts.phone')) return 'Phone number is already in use'
+  if (e.message.includes('contacts.email')) return 'Email address is already in use'
+  return 'A contact with these details already exists'
+}
+
 type Params = { params: Promise<{ id: string }> }
 
 /**
@@ -28,15 +38,25 @@ export async function PUT(req: Request, { params }: Params) {
   }
 
   const data = { ...parsed.data, email: parsed.data.email || null }
-  const [row] = await db
-    .update(contactsTable)
-    .set(data)
-    .where(eq(contactsTable.id, numId))
-    .returning()
 
-  if (!row) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  try {
+    const [row] = await db
+      .update(contactsTable)
+      .set(data)
+      .where(eq(contactsTable.id, numId))
+      .returning()
 
-  return NextResponse.json(row, { status: 200 })
+    if (!row) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+
+    return NextResponse.json(row, { status: 200 })
+  } catch (e) {
+    if (isUniqueConstraintError(e))
+      return NextResponse.json(
+        { error: uniqueConstraintMessage(e) },
+        { status: 409 }
+      )
+    throw e
+  }
 }
 
 /**
