@@ -4,64 +4,19 @@ import ContactItem from './contact-item'
 import { useQuery } from '@tanstack/react-query'
 import { getContactsQueryOptions } from '@/features/contact-flow/query'
 
-const now = new Date()
+import { Skeleton } from '@/components/ui/skeleton'
 
-const MOCK_CONTACTS: Contact[] = [
-  {
-    id: 1,
-    name: 'Timothy Lewis',
-    email: 'timothy.lewis@example.com',
-    phone: '+36 20 100 0001',
-    avatar: '/assets/Timothy.png',
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: 2,
-    name: 'Sarah Wright',
-    email: 'sarah.wright@example.com',
-    phone: '+36 20 100 0002',
-    avatar: '/assets/Sarah.png',
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: 3,
-    name: 'Lucy Jones',
-    email: 'lucy.jones@example.com',
-    phone: '+36 20 100 0003',
-    avatar: '/assets/Lucy.png',
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: 4,
-    name: 'Jake Perez',
-    email: 'jake.perez@example.com',
-    phone: '+36 20 100 0004',
-    avatar: '/assets/Jake.png',
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: 5,
-    name: 'Adebayo Rodriguez',
-    email: 'adebayo.rodriguez@example.com',
-    phone: '+36 20 100 0005',
-    avatar: '/assets/Adebayo.png',
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: 6,
-    name: 'Jamie Wright',
-    email: 'jamie.wright@example.com',
-    phone: '+36 20 100 0006',
-    avatar: null,
-    createdAt: now,
-    updatedAt: now,
-  },
-]
+export function ContactItemSkeleton() {
+  return (
+    <div className="my-2.5 flex h-10 items-center space-x-4">
+      <Skeleton className="h-10 w-10 rounded-full" />
+      <div className="flex flex-col justify-center gap-1.5">
+        <Skeleton className="h-4 w-[250px]" />
+        <Skeleton className="h-4 w-[200px]" />
+      </div>
+    </div>
+  )
+}
 
 /**
  * ContactList
@@ -70,11 +25,13 @@ const MOCK_CONTACTS: Contact[] = [
 function ContactList() {
   const { data: contacts = [], isLoading } = useQuery(getContactsQueryOptions)
 
-  // debug
-  console.log(contacts)
-
   if (isLoading) {
-    return <div>Loading...</div>
+    return (
+      <div className="flex flex-col" aria-busy aria-label="Loading contacts">
+        <ContactItemSkeleton />
+        <ContactItemSkeleton />
+      </div>
+    )
   }
 
   return (

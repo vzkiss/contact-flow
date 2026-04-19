@@ -81,6 +81,7 @@ function ContactForm({ open, onOpenChange, contact }: ContactFormProps) {
     },
     onSuccess: () => {
       toast.success('Contact saved')
+      onOpenChange(false)
     },
   })
 
