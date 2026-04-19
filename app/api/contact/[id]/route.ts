@@ -22,7 +22,7 @@ export async function PUT(req: Request, { params }: Params) {
 
   if (!parsed.success) {
     return NextResponse.json(
-      { errors: parsed.error.flatten() },
+      { error: 'Validation failed', details: parsed.error.flatten() },
       { status: 422 }
     )
   }

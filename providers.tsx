@@ -19,7 +19,7 @@ const ReactQueryDevtools =
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1_000 * 15, // 15 seconds
+      staleTime: 1_000 * 60, // 60 seconds
     },
   },
 })

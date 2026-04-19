@@ -30,6 +30,7 @@ interface ContactFormProps {
 // intersection type
 type ContactFormValues = Record<FieldConfig['name'], string> & {
   avatar: string
+  id?: number
 }
 
 // build the empty form values from the contact fields
@@ -42,9 +43,10 @@ const emptyFormValues: ContactFormValues = {
 function defaultValuesFromContact(contact: Contact | null): ContactFormValues {
   if (!contact) return emptyFormValues
   return {
+    id: contact.id,
     name: contact.name,
     phone: contact.phone,
-    email: contact.email,
+    email: contact.email ?? '',
     avatar: contact.avatar ?? '',
   }
 }
@@ -57,12 +59,14 @@ function defaultValuesFromContact(contact: Contact | null): ContactFormValues {
  * @returns A form component for the contact flow page
  */
 function ContactForm({ open, onOpenChange, contact }: ContactFormProps) {
-  const title = contact !== null ? 'Edit contact' : 'New contact'
+  const isEdit = contact !== null
+  const title = isEdit ? 'Edit contact' : 'New contact'
 
   const form = useForm({
     defaultValues: defaultValuesFromContact(contact),
     onSubmit: async ({ value }) => {
-      saveContactMutation.mutate(contact ? { ...value, id: contact.id } : value)
+      const { id, ...fields } = value
+      saveContactMutation.mutate(id ? { ...fields, id } : fields)
     },
     validators: {
       onChange: contactSchema as FormValidateOrFn<ContactFormValues>,
@@ -81,7 +85,7 @@ function ContactForm({ open, onOpenChange, contact }: ContactFormProps) {
     },
     onSuccess: () => {
       toast.success('Contact saved')
-      onOpenChange(false)
+      !isEdit && onOpenChange(false)
     },
   })
 

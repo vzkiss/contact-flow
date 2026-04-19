@@ -18,11 +18,11 @@ function ContactHeader() {
       <div className="flex h-10 items-center gap-2 md:space-x-6">
         {/* settings */}
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" aria-label="Settings">
             <IconSettings className="size-6" />
           </Button>
-          <Button variant="ghost" size="icon">
-            <Image src={profilePic} alt="Profile" width={24} height={24} />
+          <Button variant="ghost" size="icon" aria-label="Profile">
+            <Image src={profilePic} alt="" width={24} height={24} />
           </Button>
         </div>
         {/* action button */}
