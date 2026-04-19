@@ -33,7 +33,8 @@ export async function POST(req: Request) {
     )
   }
 
-  const [row] = await db.insert(contactsTable).values(parsed.data).returning()
+  const data = { ...parsed.data, email: parsed.data.email || null }
+  const [row] = await db.insert(contactsTable).values(data).returning()
 
   return NextResponse.json(row, { status: 201 })
 }

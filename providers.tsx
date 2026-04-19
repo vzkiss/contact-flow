@@ -2,6 +2,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
+// stateTime is set to short for demo purposes
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

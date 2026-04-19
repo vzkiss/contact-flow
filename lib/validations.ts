@@ -1,21 +1,24 @@
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
+import { contactsTable } from '@/db/schema'
 import { z } from 'zod'
 
-//prettier-ignore
-export const contactSchema = z.object({
-  name: z.string().min(1, { message: 'Name is required' }).max(100),
+// Generated directly from Drizzle schema — never drifts
+// prettier-ignore
+export const contactSchema = createInsertSchema(contactsTable, {
+  name: z.string().min(5, { message: 'Name is required, min 5 characters' }).max(100),
   email: z.union([
     z.literal(''),
     z.string().email({ message: 'Invalid email' }),
   ]),
-  phone: z.string().trim().max(15, { message: 'Invalid phone number' }),
+  phone: z
+    .string()
+    .min(1, { message: 'Phone number is required' })
+    .max(30, { message: 'Invalid phone number' })
+    .regex(/^\+?[0-9]+$/, { message: 'Phone number must contain digits only' }),
   avatar: z.string().optional(),
 })
 
+export const selectContactSchema = createSelectSchema(contactsTable)
+
 export type ContactInput = z.infer<typeof contactSchema>
-
-export const contactResponseSchema = z.object({
-  id: z.number().int().positive(),
-  createdAt: z.string(),
-})
-
-export type ContactResponse = z.infer<typeof contactResponseSchema>
+// export type Contact = z.infer<typeof selectContactSchema>

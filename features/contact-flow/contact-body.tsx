@@ -16,9 +16,9 @@ function ContactBody() {
     <div className="border-t border-white/5 py-3">
       <ContactList />
       <ContactForm
-        key={open ? String(contact?.id ?? 'new') : 'closed'}
-        open={open}
+        key={contact?.id ?? 'new'}
         contact={contact}
+        open={open}
         onOpenChange={(next) => {
           if (!next) close()
         }}

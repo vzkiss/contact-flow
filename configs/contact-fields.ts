@@ -6,6 +6,12 @@ export type FieldConfig = {
   required: boolean
 }
 
+/**
+ * in production this would usually be stored in:
+ * - a JSON file
+ * - a Named Value Storage
+ * - or an Edge Config Store (vercel)
+ */
 export const CONTACT_FIELDS: FieldConfig[] = [
   {
     name: 'name',
@@ -19,13 +25,13 @@ export const CONTACT_FIELDS: FieldConfig[] = [
     label: 'Phone number',
     placeholder: '+01 234 5678',
     type: 'tel',
-    required: false,
+    required: true,
   },
   {
     name: 'email',
     label: 'Email address',
     placeholder: 'jamie.wright@mail.com',
     type: 'email',
-    required: false,
+    required: true,
   },
 ]

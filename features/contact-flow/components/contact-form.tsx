@@ -6,11 +6,12 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Contact, NewContact, UpdateContact } from '@/db/schema'
+import { Contact } from '@/db/schema'
 import AvatarUpload from './avatar-upload'
 import { CONTACT_FIELDS, FieldConfig } from '@/configs/contact-fields'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Field, FieldError } from '@/components/ui/field'
 import { FormValidateOrFn, useForm } from '@tanstack/react-form'
 import { contactSchema } from '@/lib/validations'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -18,6 +19,7 @@ import {
   queryKeys,
   saveContactMutationOptions,
 } from '@/features/contact-flow/query'
+import { toast } from 'sonner'
 
 interface ContactFormProps {
   contact: Contact | null
@@ -38,9 +40,11 @@ const emptyFormValues: ContactFormValues = {
 }
 
 function defaultValuesFromContact(contact: Contact | null): ContactFormValues {
-  if (!contact) return { ...emptyFormValues }
+  if (!contact) return emptyFormValues
   return {
-    ...contact,
+    name: contact.name,
+    phone: contact.phone,
+    email: contact.email,
     avatar: contact.avatar ?? '',
   }
 }
@@ -58,11 +62,10 @@ function ContactForm({ open, onOpenChange, contact }: ContactFormProps) {
   const form = useForm({
     defaultValues: defaultValuesFromContact(contact),
     onSubmit: async ({ value }) => {
-      // await onSave(value)
-      console.log(value)
-      saveContactMutation.mutate(value)
+      saveContactMutation.mutate(contact ? { ...value, id: contact.id } : value)
     },
     validators: {
+      onChange: contactSchema as FormValidateOrFn<ContactFormValues>,
       onSubmit: contactSchema as FormValidateOrFn<ContactFormValues>,
     },
   })
@@ -74,10 +77,10 @@ function ContactForm({ open, onOpenChange, contact }: ContactFormProps) {
     onSettled: () =>
       queryClient.invalidateQueries({ queryKey: queryKeys.all() }),
     onError: (error) => {
-      console.error(error)
+      toast.error(error.message || 'Failed to save contact')
     },
     onSuccess: () => {
-      console.log('Contact saved')
+      toast.success('Contact saved')
     },
   })
 
@@ -88,11 +91,13 @@ function ContactForm({ open, onOpenChange, contact }: ContactFormProps) {
         showCloseButton={false}
       >
         <form
-          className="grid w-full min-w-0 gap-6"
+          id="contact-form"
           onSubmit={(e) => {
             e.preventDefault()
-            void form.handleSubmit()
+            e.stopPropagation()
+            form.handleSubmit()
           }}
+          className="grid w-full min-w-0 gap-6"
         >
           <DialogHeader>
             <DialogTitle className="font-heading text-2xl">{title}</DialogTitle>
@@ -115,27 +120,41 @@ function ContactForm({ open, onOpenChange, contact }: ContactFormProps) {
 
             {/* form fields */}
             <div className="flex flex-col space-y-4">
-              {CONTACT_FIELDS.map((field) => (
-                <form.Field key={field.name} name={field.name}>
-                  {(f) => (
-                    <div key={field.name} className="space-y-1">
-                      <Label
-                        htmlFor={field.name}
-                        className="text-xs text-text-secondary"
+              {CONTACT_FIELDS.map((fieldConfig) => (
+                <form.Field key={fieldConfig.name} name={fieldConfig.name}>
+                  {(field) => {
+                    const isInvalid =
+                      field.state.meta.isTouched && !field.state.meta.isValid
+                    return (
+                      <Field
+                        key={fieldConfig.name}
+                        data-invalid={isInvalid}
+                        className="space-y-1"
                       >
-                        {field.label}
-                      </Label>
-                      <Input
-                        className="text-text-primary text-sm"
-                        id={field.name}
-                        name={field.name}
-                        type={field.type}
-                        value={f.state.value}
-                        placeholder={field.placeholder}
-                        onChange={(e) => f.handleChange(e.target.value)}
-                      />
-                    </div>
-                  )}
+                        <Label
+                          htmlFor={fieldConfig.name}
+                          className="text-xs text-text-secondary"
+                          data-invalid={isInvalid}
+                        >
+                          {fieldConfig.label}
+                        </Label>
+                        <Input
+                          className="text-text-primary text-sm"
+                          id={fieldConfig.name}
+                          name={fieldConfig.name}
+                          type={fieldConfig.type}
+                          value={field.state.value}
+                          placeholder={fieldConfig.placeholder}
+                          onChange={(e) => field.handleChange(e.target.value)}
+                          onBlur={field.handleBlur}
+                          aria-invalid={isInvalid}
+                        />
+                        {isInvalid && (
+                          <FieldError errors={field.state.meta.errors} />
+                        )}
+                      </Field>
+                    )
+                  }}
                 </form.Field>
               ))}
             </div>

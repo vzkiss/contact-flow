@@ -33,6 +33,7 @@ const saveContactMutationOptions = mutationOptions({
   mutationFn: (contact: NewContact | UpdateContact) =>
     fetch(`/api/contact/${contact.id ?? ''}`, {
       method: contact.id ? 'PUT' : 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(contact),
     }),
 })

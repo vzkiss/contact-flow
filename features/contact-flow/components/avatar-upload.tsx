@@ -35,11 +35,7 @@ function useAvatarUpload(value: string) {
   }
 }
 
-function AvatarUpload({
-  value,
-  onChange,
-  nameForInitials,
-}: AvatarUploadProps) {
+function AvatarUpload({ value, onChange, nameForInitials }: AvatarUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const { avatarSrc, buttonLabel, buttonIcon, showDeleteButton } =

@@ -1,6 +1,7 @@
 import localFont from 'next/font/local'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Providers } from '@/providers'
+import { Toaster } from 'sonner'
 
 import './globals.css'
 import { cn } from '@/lib/utils'
@@ -19,7 +20,11 @@ const lexendDeca = localFont({
   weight: '400',
 })
 
-export const metadata: Metadata = { title: 'Contact Flow', colorScheme: 'dark' }
+export const metadata: Metadata = { title: 'Contact Flow' }
+
+export const viewport: Viewport = {
+  colorScheme: 'dark',
+}
 
 export default function RootLayout({
   children,
@@ -34,6 +39,7 @@ export default function RootLayout({
     >
       <body>
         <Providers>{children}</Providers>
+        <Toaster position="bottom-center" />
       </body>
     </html>
   )

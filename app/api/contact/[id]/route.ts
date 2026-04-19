@@ -23,9 +23,10 @@ export async function PUT(req: Request, { params }: Params) {
     )
   }
 
+  const data = { ...parsed.data, email: parsed.data.email || null }
   const [row] = await db
     .update(contactsTable)
-    .set(parsed.data)
+    .set(data)
     .where(eq(contactsTable.id, Number(id)))
     .returning()
 
