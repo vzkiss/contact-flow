@@ -21,4 +21,3 @@ export const contactSchema = createInsertSchema(contactsTable, {
 export const selectContactSchema = createSelectSchema(contactsTable)
 
 export type ContactInput = z.infer<typeof contactSchema>
-// export type Contact = z.infer<typeof selectContactSchema>

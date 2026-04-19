@@ -31,6 +31,11 @@ interface ContactItemProps {
   contact: Contact
 }
 
+/**
+ * ContactItem
+ * @param contact - The contact to display
+ * @returns A component that displays a contact item
+ */
 function ContactItem({ contact }: ContactItemProps) {
   const { name, phone, avatar } = contact
   const avatarSrc = avatarDisplaySrc(avatar)

@@ -10,12 +10,17 @@ import {
   isCustomAvatar,
 } from '@/lib/helper'
 
-export type AvatarUploadProps = {
+interface AvatarUploadProps {
   value: string
-  onChange: (value: string) => void
   nameForInitials: string
+  onChange: (value: string) => void
 }
 
+/**
+ * useAvatarUpload
+ * @param value - The value of the avatar
+ * @returns An object with the avatar source, button label, button icon, and show delete button
+ */
 function useAvatarUpload(value: string) {
   const hasCustomAvatar = isCustomAvatar(value)
   const avatarSrc = avatarDisplaySrc(value)
@@ -35,7 +40,14 @@ function useAvatarUpload(value: string) {
   }
 }
 
-function AvatarUpload({ value, onChange, nameForInitials }: AvatarUploadProps) {
+/**
+ * AvatarUpload
+ * @param value - The value of the avatar
+ * @param onChange - The function to call when the avatar is changed
+ * @param nameForInitials - The name to use for the initials
+ * @returns A component that allows the user to upload an avatar
+ */
+function AvatarUpload({ value, nameForInitials, onChange }: AvatarUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const { avatarSrc, buttonLabel, buttonIcon, showDeleteButton } =

@@ -1,5 +1,9 @@
 import { DEFAULT_AVATAR_URL } from '@/configs/defaults'
 
+/**
+ * Check if the error is a unique constraint error
+ * @param e - The error to check if it is a unique constraint error
+ */
 export function isUniqueConstraintError(e: unknown): e is Error {
   if (!(e instanceof Error)) return false
   const cause = (e as { cause?: unknown }).cause
@@ -13,6 +17,11 @@ export function isUniqueConstraintError(e: unknown): e is Error {
   )
 }
 
+/**
+ * Get the unique constraint message from the error
+ * @param e - The error to get the unique constraint message from
+ * @returns string
+ */
 export function uniqueConstraintMessage(e: Error): string {
   const cause = (e as { cause?: unknown }).cause
   const msg = (cause instanceof Error ? cause.message : '') || e.message
@@ -35,6 +44,11 @@ export function avatarDisplaySrc(avatar: string | null | undefined): string {
   return `data:image/png;base64,${avatar}`
 }
 
+/**
+ * Get the initials of the name
+ * @param name
+ * @returns string
+ */
 export function initialsFromName(name: string): string {
   const parts = name.trim().split(/\s+/)
   if (parts.length >= 2) {
@@ -43,6 +57,11 @@ export function initialsFromName(name: string): string {
   return name.slice(0, 2).toUpperCase()
 }
 
+/**
+ * Check if the avatar is a custom avatar
+ * @param avatar - The avatar to check if it is a custom avatar
+ * @returns true | false
+ */
 export function isCustomAvatar(avatar: string | null | undefined): boolean {
   return Boolean(avatar && avatar !== DEFAULT_AVATAR_URL)
 }

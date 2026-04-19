@@ -40,6 +40,11 @@ const emptyFormValues: ContactFormValues = {
   avatar: '',
 }
 
+/**
+ * defaultValuesFromContact
+ * @param contact - The contact to build the default values from
+ * @returns The default values for the contact form
+ */
 function defaultValuesFromContact(contact: Contact | null): ContactFormValues {
   if (!contact) return emptyFormValues
   return {
@@ -115,8 +120,8 @@ function ContactForm({ open, onOpenChange, contact }: ContactFormProps) {
                   {(field) => (
                     <AvatarUpload
                       value={field.state.value}
-                      onChange={(v) => field.handleChange(v)}
                       nameForInitials={name}
+                      onChange={(v) => field.handleChange(v)}
                     />
                   )}
                 </form.Field>
