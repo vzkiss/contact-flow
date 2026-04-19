@@ -4,7 +4,7 @@ import { contactsTable } from '@/db/schema'
 import { contactSchema } from '@/lib/validations'
 import { eq } from 'drizzle-orm'
 
-function isUniqueConstraintError(e: unknown) {
+function isUniqueConstraintError(e: unknown): e is Error {
   return e instanceof Error && e.message.includes('UNIQUE constraint failed')
 }
 
