@@ -1,7 +1,8 @@
+import { motion } from 'motion/react'
 import { Contact } from '@/db/schema'
 import ContactItem from './contact-item'
 import { useQuery } from '@tanstack/react-query'
-import { motion } from 'motion/react'
+import { getContactsQueryOptions } from '@/lib/query'
 
 const now = new Date()
 
@@ -67,11 +68,9 @@ const MOCK_CONTACTS: Contact[] = [
  * @returns A list of contacts
  */
 function ContactList() {
-  const { data: contacts = [], isLoading } = useQuery({
-    queryKey: ['contact-list'],
-    queryFn: () => fetch('/api/contact').then((r) => r.json()),
-  })
+  const { data: contacts = [], isLoading } = useQuery(getContactsQueryOptions)
 
+  // debug
   console.log(contacts)
 
   if (isLoading) {

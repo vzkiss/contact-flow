@@ -6,54 +6,75 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Contact } from '@/db/schema'
+import { Contact, NewContact, UpdateContact } from '@/db/schema'
 import AvatarUpload from './avatar-upload'
 import { CONTACT_FIELDS, FieldConfig } from '@/configs/contact-fields'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useForm } from '@tanstack/react-form'
+import { FormValidateOrFn, useForm } from '@tanstack/react-form'
 import { contactSchema } from '@/lib/validations'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { queryKeys, saveContactMutationOptions } from '@/lib/query'
 
 interface ContactFormProps {
+  contact: Contact | null
   open: boolean
   onOpenChange: (open: boolean) => void
-  contact: Contact | null
 }
 
+// intersection type
 type ContactFormValues = Record<FieldConfig['name'], string> & {
   avatar: string
 }
 
+// build the empty form values from the contact fields
+// prettier-ignore
 const emptyFormValues: ContactFormValues = {
-  ...(Object.fromEntries(CONTACT_FIELDS.map((f) => [f.name, ''])) as Record<
-    FieldConfig['name'],
-    string
-  >),
+  ...(Object.fromEntries(CONTACT_FIELDS.map((f) => [f.name, ''])) as Record<FieldConfig['name'],string>),
   avatar: '',
 }
 
 function defaultValuesFromContact(contact: Contact | null): ContactFormValues {
   if (!contact) return { ...emptyFormValues }
   return {
-    name: contact.name,
-    phone: contact.phone,
-    email: contact.email,
+    ...contact,
     avatar: contact.avatar ?? '',
   }
 }
 
+/**
+ * ContactForm
+ * @param open - Whether the dialog is open
+ * @param onOpenChange - A function to call when the dialog is opened or closed
+ * @param contact - The contact to edit, or null for a new contact
+ * @returns A form component for the contact flow page
+ */
 function ContactForm({ open, onOpenChange, contact }: ContactFormProps) {
-  const isEdit = contact != null
-  const title = isEdit ? 'Edit contact' : 'New contact'
+  const title = contact !== null ? 'Edit contact' : 'New contact'
 
   const form = useForm({
     defaultValues: defaultValuesFromContact(contact),
     onSubmit: async ({ value }) => {
       // await onSave(value)
       console.log(value)
+      saveContactMutation.mutate(value)
     },
     validators: {
-      onSubmit: contactSchema,
+      onSubmit: contactSchema as FormValidateOrFn<ContactFormValues>,
+    },
+  })
+
+  const queryClient = useQueryClient()
+
+  const saveContactMutation = useMutation({
+    ...saveContactMutationOptions,
+    onSettled: () =>
+      queryClient.invalidateQueries({ queryKey: queryKeys.all() }),
+    onError: (error) => {
+      console.error(error)
+    },
+    onSuccess: () => {
+      console.log('Contact saved')
     },
   })
 

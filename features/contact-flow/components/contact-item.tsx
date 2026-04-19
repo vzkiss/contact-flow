@@ -22,23 +22,25 @@ import { cn } from '@/lib/utils'
 import { contactDialogStore } from '@/stores/contact-dialog-store'
 import { Contact } from '@/db/schema'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { deleteContactMutationOptions, queryKeys } from '@/lib/query'
 
 interface ContactItemProps {
   contact: Contact
 }
 
 function ContactItem({ contact }: ContactItemProps) {
-  const [menuOpen, setMenuOpen] = useState(false)
   const { name, phone, avatar } = contact
   const avatarSrc = avatarDisplaySrc(avatar)
 
+  const [menuOpen, setMenuOpen] = useState(false)
+
   const queryClient = useQueryClient()
 
-  const deleteMutation = useMutation({
-    mutationFn: (id: number) =>
-      fetch(`/api/contact/${id}`, { method: 'DELETE' }),
+  // delete contact
+  const deleteContactMutation = useMutation({
+    ...deleteContactMutationOptions,
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ['contact-list'] }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.all() }),
   })
 
   const menuItems = [
@@ -58,7 +60,7 @@ function ContactItem({ contact }: ContactItemProps) {
       icon: <IconDelete className="size-5 text-text-secondary" />,
       label: 'Remove',
       onClick: () => {
-        deleteMutation.mutate(contact.id)
+        deleteContactMutation.mutate(contact.id)
       },
     },
   ] as const
