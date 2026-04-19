@@ -63,7 +63,8 @@ function AvatarUpload({ value, onChange, nameForInitials }: AvatarUploadProps) {
   }
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex h-22 w-full min-w-0 flex-nowrap items-center gap-4">
+      {/* image * file input */}
       <input
         ref={fileInputRef}
         type="file"
@@ -73,13 +74,13 @@ function AvatarUpload({ value, onChange, nameForInitials }: AvatarUploadProps) {
         aria-hidden
         onChange={handleFileChange}
       />
-      <Avatar className="size-16 shrink-0 md:size-[88px]">
+      <Avatar className="size-22 shrink-0 overflow-hidden">
         <AvatarImage src={avatarSrc} alt="" />
         <AvatarFallback>{initialsFromName(nameForInitials)}</AvatarFallback>
       </Avatar>
 
-      {/* action buttons */}
-      <div className="flex items-center gap-2">
+      {/* buttons — flex-1 + min-w-0 (not w-full): avoids row min-width > dialog when beside fixed avatar */}
+      <div className="flex min-w-0 flex-1 items-center gap-2">
         <Button
           variant="default"
           size="lg"
@@ -89,16 +90,17 @@ function AvatarUpload({ value, onChange, nameForInitials }: AvatarUploadProps) {
           {buttonIcon as React.ReactNode}
           {buttonLabel} picture
         </Button>
-        {showDeleteButton && (
-          <Button
-            variant="default"
-            size="icon-lg"
-            type="button"
-            onClick={handleDelete}
-          >
-            <IconDelete className="size-6" />
-          </Button>
-        )}
+        <Button
+          variant="default"
+          size="icon-lg"
+          type="button"
+          onClick={handleDelete}
+          aria-hidden={!showDeleteButton}
+          tabIndex={showDeleteButton ? undefined : -1}
+          className={!showDeleteButton ? 'invisible' : undefined}
+        >
+          <IconDelete className="size-6" />
+        </Button>
       </div>
     </div>
   )

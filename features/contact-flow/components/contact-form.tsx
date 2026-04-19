@@ -88,7 +88,7 @@ function ContactForm({ open, onOpenChange, contact }: ContactFormProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="max-w-[min(364px,calc(100%-2rem))] border-none bg-(--color-g100) p-6 shadow-none sm:max-w-[364px]"
+        className="border-none bg-(--color-g100) p-4 shadow-none sm:max-w-[min(364px,calc(100%-2rem))] sm:p-6"
         showCloseButton={false}
       >
         <form
@@ -130,7 +130,7 @@ function ContactForm({ open, onOpenChange, contact }: ContactFormProps) {
                       <Field
                         key={fieldConfig.name}
                         data-invalid={isInvalid}
-                        className="space-y-1"
+                        className="gap-1"
                       >
                         <Label
                           htmlFor={fieldConfig.name}
@@ -161,10 +161,9 @@ function ContactForm({ open, onOpenChange, contact }: ContactFormProps) {
             </div>
           </div>
 
-          <DialogFooter className="gap-2 pt-6">
+          <DialogFooter className="flex flex-row justify-end gap-2 pt-6">
             <Button
               type="button"
-              className="order-last sm:order-first"
               variant="secondary"
               onClick={() => onOpenChange(false)}
             >

@@ -13,12 +13,11 @@ import { contactDialogStore } from '@/stores/contact-dialog-store'
 function ContactHeader() {
   return (
     <header className="flex items-center justify-between py-6">
-      {/* left */}
       <h1 className="font-heading text-4xl">Contacts</h1>
-      {/* right */}
-      <div className="flex h-10 items-center space-x-6">
+
+      <div className="flex h-10 items-center gap-2 md:space-x-6">
         {/* settings */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon">
             <IconSettings className="size-6" />
           </Button>
@@ -29,10 +28,11 @@ function ContactHeader() {
         {/* action button */}
         <Button
           variant="special"
+          className="max-md:gap-0 max-md:px-3"
           onClick={() => contactDialogStore.getState().openAdd()}
         >
           <IconAdd className="size-6" />
-          Add new
+          <span className="hidden md:inline">Add new</span>
         </Button>
       </div>
     </header>
