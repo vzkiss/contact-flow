@@ -32,8 +32,8 @@ pnpm-debug.log*
 .env*.local
 
 # sqlite (local dev)
-/db/*.db
-/db/*.db-journal
+# /db/*.db
+# /db/*.db-journal
 
 # typescript
 *.tsbuildinfo
