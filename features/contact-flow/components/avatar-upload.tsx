@@ -66,7 +66,7 @@ function AvatarUpload({ value, onChange, nameForInitials }: AvatarUploadProps) {
   }
 
   return (
-    <div className="flex h-22 w-full min-w-0 flex-nowrap items-center gap-4">
+    <div className="flex h-16 w-full min-w-0 flex-nowrap items-center gap-4 sm:h-22">
       {/* image * file input */}
       <input
         ref={fileInputRef}
@@ -77,7 +77,7 @@ function AvatarUpload({ value, onChange, nameForInitials }: AvatarUploadProps) {
         aria-hidden
         onChange={handleFileChange}
       />
-      <Avatar className="size-22 shrink-0 overflow-hidden">
+      <Avatar className="size-16 shrink-0 overflow-hidden sm:size-22">
         <AvatarImage src={avatarSrc} alt="" />
         <AvatarFallback>{initialsFromName(nameForInitials)}</AvatarFallback>
       </Avatar>
