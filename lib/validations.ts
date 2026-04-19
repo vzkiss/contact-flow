@@ -14,7 +14,7 @@ export const contactSchema = createInsertSchema(contactsTable, {
     .string()
     .min(1, { message: 'Phone number is required' })
     .max(30, { message: 'Invalid phone number' })
-    .regex(/^\+?[0-9]+$/, { message: 'Phone number must contain digits only' }),
+    .regex(/^\+?[0-9 ]+$/, { message: 'Phone number must contain digits only' }),
   avatar: z.string().optional(),
 })
 
