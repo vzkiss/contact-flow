@@ -149,7 +149,7 @@ function ContactForm({ open, onOpenChange, contact }: ContactFormProps) {
                           {fieldConfig.label}
                         </Label>
                         <Input
-                          className="text-text-primary text-sm"
+                          className="text-text-primary text-base md:text-sm"
                           id={fieldConfig.name}
                           name={fieldConfig.name}
                           type={fieldConfig.type}
