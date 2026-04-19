@@ -45,7 +45,7 @@ function ContactList() {
           layout
           transition={{ duration: 0.2 }}
         >
-          <ContactItem key={contact.id} contact={contact} />
+          <ContactItem contact={contact} />
         </motion.div>
       ))}
     </div>

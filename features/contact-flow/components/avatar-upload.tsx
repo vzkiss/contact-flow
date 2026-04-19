@@ -45,10 +45,13 @@ function AvatarUpload({ value, onChange, nameForInitials }: AvatarUploadProps) {
     fileInputRef.current?.click()
   }
 
+  const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5 MB
+
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     e.target.value = ''
     if (!file?.type.startsWith('image/')) return
+    if (file.size > MAX_FILE_SIZE) return
 
     const reader = new FileReader()
     reader.onload = () => {

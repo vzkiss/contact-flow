@@ -13,6 +13,10 @@ type Params = { params: Promise<{ id: string }> }
  */
 export async function PUT(req: Request, { params }: Params) {
   const { id } = await params
+  const numId = Number(id)
+  if (!Number.isInteger(numId) || numId < 1)
+    return NextResponse.json({ error: 'Invalid id' }, { status: 400 })
+
   const body = await req.json()
   const parsed = contactSchema.safeParse(body)
 
@@ -27,12 +31,12 @@ export async function PUT(req: Request, { params }: Params) {
   const [row] = await db
     .update(contactsTable)
     .set(data)
-    .where(eq(contactsTable.id, Number(id)))
+    .where(eq(contactsTable.id, numId))
     .returning()
 
   if (!row) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-  return NextResponse.json(row)
+  return NextResponse.json(row, { status: 200 })
 }
 
 /**
@@ -42,6 +46,10 @@ export async function PUT(req: Request, { params }: Params) {
  */
 export async function DELETE(_req: Request, { params }: Params) {
   const { id } = await params
-  await db.delete(contactsTable).where(eq(contactsTable.id, Number(id)))
+  const numId = Number(id)
+  if (!Number.isInteger(numId) || numId < 1)
+    return NextResponse.json({ error: 'Invalid id' }, { status: 400 })
+
+  await db.delete(contactsTable).where(eq(contactsTable.id, numId))
   return new NextResponse(null, { status: 204 })
 }

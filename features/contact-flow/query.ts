@@ -13,7 +13,11 @@ const queryKeys = {
  */
 const getContactsQueryOptions = queryOptions({
   queryKey: queryKeys.lists(),
-  queryFn: () => fetch('/api/contact').then((r) => r.json()),
+  queryFn: async () => {
+    const r = await fetch('/api/contact')
+    if (!r.ok) throw new Error(`Failed to fetch contacts: ${r.status}`)
+    return r.json()
+  },
 })
 
 /**
@@ -21,7 +25,10 @@ const getContactsQueryOptions = queryOptions({
  * @returns A mutation options object for the delete contact mutation
  */
 const deleteContactMutationOptions = mutationOptions({
-  mutationFn: (id: number) => fetch(`/api/contact/${id}`, { method: 'DELETE' }),
+  mutationFn: async (id: number) => {
+    const r = await fetch(`/api/contact/${id}`, { method: 'DELETE' })
+    if (!r.ok) throw new Error(`Failed to delete contact: ${r.status}`)
+  },
 })
 
 /**
@@ -30,12 +37,15 @@ const deleteContactMutationOptions = mutationOptions({
  * @returns A mutation options object for the save contact mutation
  */
 const saveContactMutationOptions = mutationOptions({
-  mutationFn: (contact: NewContact | UpdateContact) =>
-    fetch(`/api/contact/${contact.id ?? ''}`, {
+  mutationFn: async (contact: NewContact | UpdateContact) => {
+    const r = await fetch(`/api/contact/${contact.id ?? ''}`, {
       method: contact.id ? 'PUT' : 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(contact),
-    }),
+    })
+    if (!r.ok) throw new Error(`Failed to save contact: ${r.status}`)
+    return r.json()
+  },
 })
 
 export {

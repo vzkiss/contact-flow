@@ -32,6 +32,6 @@ export const CONTACT_FIELDS: FieldConfig[] = [
     label: 'Email address',
     placeholder: 'jamie.wright@mail.com',
     type: 'email',
-    required: true,
+    required: false,
   },
 ]

@@ -3,7 +3,6 @@
 import ContactList from './components/contact-list'
 import ContactForm from './components/contact-form'
 import { useContactDialog } from '@/stores/contact-dialog-store'
-import { useQuery } from '@tanstack/react-query'
 
 /**
  * ContactBody
