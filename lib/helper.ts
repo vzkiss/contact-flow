@@ -1,5 +1,26 @@
 import { DEFAULT_AVATAR_URL } from '@/configs/defaults'
 
+export function isUniqueConstraintError(e: unknown): e is Error {
+  if (!(e instanceof Error)) return false
+  const cause = (e as { cause?: unknown }).cause
+  const causeCode =
+    cause instanceof Error ? (cause as { code?: string }).code : undefined
+  const causeMsg = cause instanceof Error ? cause.message : ''
+  return (
+    e.message.includes('UNIQUE constraint failed') ||
+    causeCode === 'SQLITE_CONSTRAINT' ||
+    causeMsg.includes('UNIQUE constraint failed')
+  )
+}
+
+export function uniqueConstraintMessage(e: Error): string {
+  const cause = (e as { cause?: unknown }).cause
+  const msg = (cause instanceof Error ? cause.message : '') || e.message
+  if (msg.includes('contacts.phone')) return 'Phone number is already in use'
+  if (msg.includes('contacts.email')) return 'Email address is already in use'
+  return 'A contact with these details already exists'
+}
+
 /** Value from DB/API: data URL, legacy public path, or raw base64 payload. */
 export function avatarDisplaySrc(avatar: string | null | undefined): string {
   if (avatar == null || avatar === '') return DEFAULT_AVATAR_URL

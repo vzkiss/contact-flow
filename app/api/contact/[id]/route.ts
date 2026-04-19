@@ -3,20 +3,7 @@ import { db } from '@/db'
 import { contactsTable } from '@/db/schema'
 import { contactSchema } from '@/lib/validations'
 import { eq } from 'drizzle-orm'
-import { LibsqlError } from '@libsql/client'
-
-function isUniqueConstraintError(e: unknown): e is LibsqlError {
-  return (
-    e instanceof LibsqlError && e.code === 'SQLITE_CONSTRAINT_UNIQUE' ||
-    e instanceof Error && e.message.includes('UNIQUE constraint failed')
-  )
-}
-
-function uniqueConstraintMessage(e: Error) {
-  if (e.message.includes('contacts.phone')) return 'Phone number is already in use'
-  if (e.message.includes('contacts.email')) return 'Email address is already in use'
-  return 'A contact with these details already exists'
-}
+import { isUniqueConstraintError, uniqueConstraintMessage } from '@/lib/helper'
 
 type Params = { params: Promise<{ id: string }> }
 
