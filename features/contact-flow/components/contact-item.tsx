@@ -22,7 +22,10 @@ import { cn } from '@/lib/utils'
 import { contactDialogStore } from '@/stores/contact-dialog-store'
 import { Contact } from '@/db/schema'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { deleteContactMutationOptions, queryKeys } from '@/lib/query'
+import {
+  deleteContactMutationOptions,
+  queryKeys,
+} from '@/features/contact-flow/query'
 
 interface ContactItemProps {
   contact: Contact

@@ -2,7 +2,7 @@ import { motion } from 'motion/react'
 import { Contact } from '@/db/schema'
 import ContactItem from './contact-item'
 import { useQuery } from '@tanstack/react-query'
-import { getContactsQueryOptions } from '@/lib/query'
+import { getContactsQueryOptions } from '@/features/contact-flow/query'
 
 const now = new Date()
 

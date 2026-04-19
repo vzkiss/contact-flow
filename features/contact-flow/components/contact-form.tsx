@@ -14,7 +14,10 @@ import { Label } from '@/components/ui/label'
 import { FormValidateOrFn, useForm } from '@tanstack/react-form'
 import { contactSchema } from '@/lib/validations'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { queryKeys, saveContactMutationOptions } from '@/lib/query'
+import {
+  queryKeys,
+  saveContactMutationOptions,
+} from '@/features/contact-flow/query'
 
 interface ContactFormProps {
   contact: Contact | null
