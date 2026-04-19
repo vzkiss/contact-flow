@@ -2,6 +2,7 @@ import localFont from 'next/font/local'
 import type { Metadata, Viewport } from 'next'
 import { Providers } from '@/providers'
 import { Toaster } from 'sonner'
+import { Analytics } from '@vercel/analytics/next'
 
 import './globals.css'
 import { cn } from '@/lib/utils'
@@ -40,6 +41,7 @@ export default function RootLayout({
       <body>
         <Providers>{children}</Providers>
         <Toaster position="bottom-center" />
+        <Analytics />
       </body>
     </html>
   )
