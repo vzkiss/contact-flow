@@ -83,8 +83,12 @@ function ContactItem({ contact }: ContactItemProps) {
         </Avatar>
         {/* data */}
         <div className="flex flex-col justify-center">
-          <h3 className="text-base">{name}</h3>
-          <p className="text-xs text-text-secondary">{phone}</p>
+          <h3 className="max-w-[150px] truncate text-base sm:max-w-[200px]">
+            {name}
+          </h3>
+          <p className="max-w-[150px] truncate text-xs text-text-secondary sm:max-w-[200px]">
+            {phone}
+          </p>
         </div>
       </div>
       <div
