@@ -84,6 +84,8 @@ ContactForm → PUT /api/contact/[id] → Drizzle → SQLite
 
 **Skeleton loading** — `ContactItemSkeleton` in `features/contact-flow/components/contact-list.tsx` renders two placeholder rows (circular avatar + two lines) while the initial fetch is in-flight, matching the shape of a real contact item so the layout does not shift on load.
 
+**Constraint error handling** — SQLite unique constraint violations on `phone` and `email` are caught at the API layer and returned as `409 Conflict` with a structured error response, surfaced to the user as specific toast messages ("Phone number is already in use") rather than generic failures.
+
 ## Project structure
 
 ```
